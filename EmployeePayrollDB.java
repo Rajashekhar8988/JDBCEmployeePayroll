@@ -36,19 +36,27 @@ public class EmployeePayrollDB {
         	 System.out.println("Connecting to database : "+jdbcURL);
         	 connection=DriverManager.getConnection(jdbcURL,userName,password);
         	 System.out.println("Connection is successfull...!!!    "+connection);
+        	 
+        //update the salary for the basic pay for Employee Terrisa to 3000000.00 and sync it with Database
+        	 Statement st=connection.createStatement();
+        	 String query1=" update employee_payroll set basic_pay=30000000 where department='sales' ";
+        	 int result=st.executeUpdate(query1);
+        	 System.out.println("Records updated : "+result);
+        	
+       //Employee Payroll Service to retrieve the Employee Payroll from the Database
+        	 Statement statement = connection.createStatement();
         	 String query="Select * from employee_payroll";
-        	 PreparedStatement statement = connection.prepareStatement(query);
-        	 ResultSet result=statement.executeQuery();
+        	 ResultSet result1=statement.executeQuery(query);
         	 System.out.println("id\t\tname\t\tphone_number\t\taddress\t\tdepartment\t\tgender\t\tbasic_pay");
-        	 while(result.next())
+        	 while(result1.next())
         	 {
-        	 	int id=result.getInt("id");
-        	 	String name=result.getString("name");
-        	 	double phoneNumber=result.getInt("phone_number");
-        	 	String address=result.getString("address");
-        	 	String department=result.getString("department");
-        	 	String gender=result.getString("gender");
-        	 	double basicpay=result.getInt("basic_pay");
+        	 	int id=result1.getInt("id");
+        	 	String name=result1.getString("name");
+        	 	double phoneNumber=result1.getInt("phone_number");
+        	 	String address=result1.getString("address");
+        	 	String department=result1.getString("department");
+        	 	String gender=result1.getString("gender");
+        	 	double basicpay=result1.getInt("basic_pay");
         	 	System.out.println(id+ "\t\t" +name+ "\t\t" +phoneNumber + "       \t\t" +address+ "\t\t" +department+ "      \t\t" +gender+ "\t\t" +basicpay);
         	 }
         	 listDrivers();
