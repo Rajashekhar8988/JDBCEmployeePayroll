@@ -1,7 +1,9 @@
 package bridgeLabz.MYSQL;
 
 import java.sql.Connection;
+
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Enumeration;
@@ -31,16 +33,32 @@ public class EmployeePayrollDB {
           *printing the output to check the connection is established
           */
          try {
-        	 System.out.println("Connecting to database:"+jdbcURL);
+        	 System.out.println("Connecting to database : "+jdbcURL);
         	 connection=DriverManager.getConnection(jdbcURL,userName,password);
-        	 System.out.println("Connection is successfull...!!!"+connection);
-        	 
-         }catch(Exception e) {
-              e.printStackTrace();        
-              }
-         listDrivers();
+        	 System.out.println("Connection is successfull...!!!    "+connection);
+        	 String query="Select * from employee_payroll";
+        	 PreparedStatement statement = connection.prepareStatement(query);
+        	 ResultSet result=statement.executeQuery();
+        	 System.out.println("id\t\tname\t\tphone_number\t\taddress\t\tdepartment\t\tgender\t\tbasic_pay");
+        	 while(result.next())
+        	 {
+        	 	int id=result.getInt("id");
+        	 	String name=result.getString("name");
+        	 	double phoneNumber=result.getInt("phone_number");
+        	 	String address=result.getString("address");
+        	 	String department=result.getString("department");
+        	 	String gender=result.getString("gender");
+        	 	double basicpay=result.getInt("basic_pay");
+        	 	System.out.println(id+ "\t\t" +name+ "\t\t" +phoneNumber + "       \t\t" +address+ "\t\t" +department+ "      \t\t" +gender+ "\t\t" +basicpay);
+        	 }
+        	 listDrivers();
+	}catch(Exception e)
+         {
+		e.printStackTrace();
+         }
 	}
-	//Listing the MySQL JDBC Drivers
+	
+	    //Listing the MySQL JDBC Drivers
            private static void listDrivers() {
 	       Enumeration<java.sql.Driver> driverList = DriverManager.getDrivers();
               while(driverList.hasMoreElements()) {
