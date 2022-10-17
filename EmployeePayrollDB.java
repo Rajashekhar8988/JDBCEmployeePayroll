@@ -38,15 +38,20 @@ public class EmployeePayrollDB {
         	 System.out.println("Connection is successfull...!!!    "+connection);
         	 
         //update the salary for the basic pay for Employee Terrisa to 3000000.00 and sync it with Database
-        	 Statement st=connection.createStatement();
-        	 String query1=" update employee_payroll set basic_pay=30000000 where department='sales' ";
-        	 int result=st.executeUpdate(query1);
-        	 System.out.println("Records updated : "+result);
+        	 String whereCondition =" basic_pay=? where department=? ";
+        	 String query="update employee_payroll set" + whereCondition;
+
+        	 //Using prepared statement to update the basic_pay in the table
+        	 PreparedStatement statement = connection.prepareStatement(query);
+        	 statement.setDouble(1,30000000);
+        	 statement.setString(2,"sales");
+        	 Integer recordUpdated=statement.executeUpdate();
+        	 System.out.println("Records updated : "+recordUpdated);
         	
        //Employee Payroll Service to retrieve the Employee Payroll from the Database
-        	 Statement statement = connection.createStatement();
-        	 String query="Select * from employee_payroll";
-        	 ResultSet result1=statement.executeQuery(query);
+        	 String query1="Select * from employee_payroll";
+        	 PreparedStatement statement1 = connection.prepareStatement(query1);
+        	 ResultSet result1=statement1.executeQuery();
         	 System.out.println("id\t\tname\t\tphone_number\t\taddress\t\tdepartment\t\tgender\t\tbasic_pay");
         	 while(result1.next())
         	 {
